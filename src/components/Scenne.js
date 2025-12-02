@@ -1,94 +1,104 @@
-import React from 'react';
-import {useRef, useEffect} from 'react';
+import React, { useRef, useEffect } from 'react';
+import SceneManager from '../three/scene/SceneManager';
+import MaterialFactory from '../three/materials/MaterialFactory';
+import GeometryFactory from '../three/geometries/GeometryFactory';
+import LightingSetup from '../three/lighting/LightingSetup';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-const Scenne = () => {
+/**
+ * Componente Scene (corregido de "Scenne")
+ * Sigue SRP: responsable solo de orquestar la escena de demostración
+ */
+const Scene = () => {
+  const mountRef = useRef(null);
 
-    const mountRef = useRef(null);
+  useEffect(() => {
+    if (!mountRef.current) return;
 
-    useEffect(() => {
-        const currentMount = mountRef.current;
+    // 1. Crear gestor de escena
+    const sceneManager = new SceneManager(mountRef.current);
+    sceneManager.initialize();
 
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(
-            25, 
-            currentMount.clientWidth / currentMount.clientHeight, 
-            0.1, 
-            1000
-        );
-        camera.position.z = 5;
-        scene.add(camera);
-        //renderer
-        const renderer = new THREE.WebGLRenderer();
+    // 2. Configurar iluminación
+    const lighting = new LightingSetup(sceneManager.getScene());
+    lighting.setupLighting();
 
-        renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
-        currentMount.appendChild(renderer.domElement);
+    // 3. Crear factories
+    const materialFactory = new MaterialFactory();
+    const geometryFactory = new GeometryFactory();
 
-        //controls
-        const controls = new OrbitControls(camera, renderer.domElement);
-        
-        controls.enableDamping = true;
+    // 4. Crear objetos 3D
+    const objects = [];
 
+    // Cubo
+    const cubeGeom = geometryFactory.createBox(1, 1, 1);
+    const cubeMat = new THREE.MeshBasicMaterial({
+      color: 0x00ff00,
+      transparent: true,
+      opacity: 0.3,
+      wireframe: true,
+    });
+    const cube = new THREE.Mesh(cubeGeom, cubeMat);
+    cube.position.y = 0.5;
+    cube.name = 'cube';
+    sceneManager.add(cube);
+    objects.push({ mesh: cube, material: cubeMat });
 
-        //cubo
-        const cube = new THREE.Mesh(
-            new THREE.BoxGeometry(1, 1, 1),
-            new THREE.MeshBasicMaterial(
-                { color: 0x00ff023, transparent: true, opacity: 0.3, 
-                    wireframe: true
-                }
-            )
-            
-        );
-        scene.add(cube);
-        cube.position.y = 0.5;
+    // Esfera
+    const sphereGeom = geometryFactory.createSphere(0.8, 32, 16);
+    const sphereMat = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+    const sphere = new THREE.Mesh(sphereGeom, sphereMat);
+    sphere.position.set(2, 2, 0);
+    sphere.name = 'sphere';
+    sceneManager.add(sphere);
+    objects.push({ mesh: sphere, material: sphereMat });
 
-        //Sphere
-        const geometry = new THREE.SphereGeometry( 0.8, 32, 16 );
-        const material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
-        const sphere = new THREE.Mesh( geometry, material );
-        scene.add( sphere );
-        sphere.position.x = 2;
-        sphere.position.y = 2;
+    // Toro
+    const torusGeom = geometryFactory.createTorus(0.3, 0.1, 100, 16);
+    const torusMat = new THREE.MeshNormalMaterial();
+    const torus = new THREE.Mesh(torusGeom, torusMat);
+    torus.position.set(-2, -0.5, 0);
+    torus.name = 'torus';
+    sceneManager.add(torus);
+    objects.push({ mesh: torus, material: torusMat });
 
-        // torus
-        const torus = new THREE.TorusKnotGreometry( 0.3, 0.1, 100, 16 );
-        const torusMaterial = new THREE.MeshNormalMaterial();
-        const torusKnot = new THREE.Mesh( torus, torusMaterial );
-        scene.add( torusKnot );
-        torusKnot.position.x = -2;
-        torusKnot.position.y = -0.5;
+    // 5. Iniciar loop de animación con rotaciones
+    sceneManager.startAnimationLoop(() => {
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+      sphere.rotation.y += 0.01;
+      torus.rotation.x += 0.01;
+    });
 
-        //animation
-        const animate = function () {
-            controls.update();
-            requestAnimationFrame(animate); 
-            controls.update();
-            renderer.render(scene, camera);
-        };
-        animate();
+    // 6. Manejo del redimensionamiento
+    const handleResize = () => {
+      sceneManager.onWindowResize();
+    };
+    window.addEventListener('resize', handleResize);
 
-        //clean up
-        return () => { 
-            currentMount.removeChild(renderer.domElement);
-        };
+    // 7. Cleanup
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      objects.forEach(({ material }) => {
+        material.dispose?.();
+      });
+      lighting.dispose();
+      materialFactory.dispose();
+      geometryFactory.dispose();
+      sceneManager.dispose();
+    };
+  }, []);
 
-
-    }, []);
-
-    return (
-        <div
-            className="container3d"
-            ref={mountRef}
-            style={{
-                width: '100vw',
-                height: '100vh',
-                }}
-        >
-            <h1>Hola mundo</h1>
-        </div>
-    );
+  return (
+    <div
+      className="container3d"
+      ref={mountRef}
+      style={{
+        width: '100vw',
+        height: '100vh',
+      }}
+    />
+  );
 };
 
-export default Scenne;
+export default Scene;
