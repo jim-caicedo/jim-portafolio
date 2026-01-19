@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as THREE from 'three';
 import cieloImg from '../assets/CieloAsset.jpg';
 import SceneManager from '../three/scene/SceneManager';
@@ -14,6 +15,7 @@ import './House.css';
  * Sigue SRP: responsable solo de orquestar la escena y manejar el ciclo de vida
  */
 const House = () => {
+  const navigate = useNavigate();
   const mountRef = useRef(null);
   const sceneManagerRef = useRef(null);
   const doorRef = useRef(null);
@@ -116,8 +118,8 @@ const House = () => {
    */
   const handleEnter = useCallback(() => {
     console.log('Entrando a la casa...');
-    // Aquí puedes agregar la navegación o transición
-  }, []);
+    navigate('/interior');
+  }, [navigate]);
 
   return (
     <div className="container3d">
