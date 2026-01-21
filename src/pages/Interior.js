@@ -5,6 +5,8 @@ import SceneManager from '../three/scene/SceneManager';
 import GeometryFactory from '../three/geometries/GeometryFactory';
 import MaterialFactory from '../three/materials/MaterialFactory';
 import RubiksCubeBuilder from '../three/objects/RubiksCubeBuilder';
+import KeyboardController from '../three/strategies/input/KeyboardController';
+import MoveHistory from '../three/strategies/history/MoveHistory';
 import './Interior.css';
 
 const Interior = () => {
@@ -59,20 +61,31 @@ const Interior = () => {
 
     sceneManager.add(rubiksCube);
 
-    // 7. Iniciar loop de animación (sin rotación automática)
+    // 7. Crear historial de movimientos
+    const moveHistory = new MoveHistory();
+
+    // 8. Inicializar controlador de teclado
+    const keyboardController = new KeyboardController(
+      rubiksCube,
+      rubiksCubeBuilder.cubies,
+      moveHistory
+    );
+
+    // 9. Iniciar loop de animación
     sceneManager.startAnimationLoop(() => {
       // El cubo solo gira cuando se manipula la cámara
     });
 
-    // 8. Manejo del redimensionamiento
+    // 10. Manejo del redimensionamiento
     const handleResize = () => {
       sceneManager.onWindowResize();
     };
     window.addEventListener('resize', handleResize);
 
-    // 9. Cleanup
+    // 11. Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
+      keyboardController.destroy();
       geometryFactory.dispose();
       materialFactory.dispose();
       sceneManager.dispose();
