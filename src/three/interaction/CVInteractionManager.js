@@ -59,9 +59,7 @@ class CVInteractionManager {
     this.isAnimating = true;
     this.animationProgress = 0;
     this.cvPlane.setFocused(this.isFocused);
-    
-    console.log(`[INTERACTION] ${this.isFocused ? 'Focus ON' : 'Focus OFF'}`);
-  }
+   }
 
   updateAnimation(deltaTime) {
     if (!this.isAnimating) return;
