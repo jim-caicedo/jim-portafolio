@@ -12,8 +12,8 @@ class KeyboardController {
   }
 
   setupInstructions() {
-    const panel = document.createElement('div');
-    panel.style.cssText = `
+    this.panel = document.createElement('div');
+    this.panel.style.cssText = `
       position: fixed;
       top: 80px;
       right: 20px;
@@ -29,7 +29,7 @@ class KeyboardController {
       backdrop-filter: blur(10px);
     `;
 
-    panel.innerHTML = `
+    this.panel.innerHTML = `
       <h3 style="margin-top: 0; color: #6496ff;">Controles</h3>
       <table style="width: 100%; border-collapse: collapse;">
         <tr style="border-bottom: 1px solid rgba(255,255,255,0.2);">
@@ -62,7 +62,7 @@ class KeyboardController {
       </p>
     `;
 
-    document.body.appendChild(panel);
+    document.body.appendChild(this.panel);
   }
 
   setupKeyboardListener() {
@@ -103,7 +103,9 @@ class KeyboardController {
   }
 
   destroy() {
-    // Cleanup
+    if (this.panel && this.panel.parentNode) {
+      this.panel.parentNode.removeChild(this.panel);
+    }
   }
 }
 
