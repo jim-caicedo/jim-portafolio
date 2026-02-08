@@ -16,7 +16,7 @@ class CVInteractionManager {
     
     // Posiciones de cámara: lejos al inicio, cerca cuando enfoca
     this.initialCameraZ = 12;
-    this.focusedCameraZ = 4.5;
+    this.focusedCameraZ = 8; // Aumentado para menos acercamiento
     
     // Rotaciones iniciales y finales
     this.initialRotation = { x: 0.3, y: 0, z: 0 }; // Ligera inclinación inicial
