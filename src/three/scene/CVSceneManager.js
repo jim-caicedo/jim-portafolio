@@ -36,7 +36,7 @@ class CVSceneManager {
       0.1,
       1000
     );
-    this.camera.position.z = 8;
+    this.camera.position.set(0, 0, 12);
     console.log('[CVSceneManager] Camera position:', this.camera.position);
   }
 

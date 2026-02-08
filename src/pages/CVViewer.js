@@ -20,6 +20,10 @@ function CVViewer() {
     // Crear plano de CV
     const cvPlane = new CVPlane();
     cvPlaneRef.current = cvPlane;
+    
+    // Establecer rotación inicial (ligera inclinación)
+    cvPlane.group.rotation.x = 0.3;
+    
     sceneManager.getScene().add(cvPlane.getGroup());
 
     console.log('[CV] Scene initialized');
@@ -34,12 +38,9 @@ function CVViewer() {
     );
     interactionManagerRef.current = interactionManager;
 
-    // Posición inicial
-    cvPlane.getGroup().position.copy(interactionManager.initialPosition);
-
     // Loop de animación
     sceneManager.animate((deltaTime) => {
-      // Actualizar rotación del plano
+      // Actualizar rotación del plano (siempre, incluso cuando enfocado)
       cvPlane.updateRotation(deltaTime);
 
       // Actualizar animación de interacción

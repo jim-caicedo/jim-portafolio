@@ -70,6 +70,7 @@ class CVPlane {
   }
 
   updateRotation(deltaTime) {
+    // Solo rotar cuando no está enfocado
     if (!this.isFocused) {
       this.group.rotation.y += deltaTime * 0.3;
     }

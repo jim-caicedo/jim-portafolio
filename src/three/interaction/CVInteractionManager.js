@@ -12,13 +12,15 @@ class CVInteractionManager {
     this.isFocused = false;
     this.isAnimating = false;
     this.animationProgress = 0;
-    this.animationDuration = 0.6; // segundos
+    this.animationDuration = 0.8; // segundos
     
-    // Posiciones y rotaciones iniciales/finales
-    this.initialPosition = new THREE.Vector3(0, 0, 0);
-    this.focusedPosition = new THREE.Vector3(0, 0, -2);
-    this.initialRotation = new THREE.Euler(0, 0, 0);
-    this.focusedScale = 1.05;
+    // Posiciones de cámara: lejos al inicio, cerca cuando enfoca
+    this.initialCameraZ = 12;
+    this.focusedCameraZ = 4.5;
+    
+    // Rotaciones iniciales y finales
+    this.initialRotation = { x: 0.3, y: 0, z: 0 }; // Ligera inclinación inicial
+    this.focusedRotation = { x: 0, y: 0, z: 0 };   // Completamente de frente
     
     this.setupEventListeners();
   }
@@ -26,10 +28,6 @@ class CVInteractionManager {
   setupEventListeners() {
     this.renderer.domElement.addEventListener('click', (event) => {
       this.handleClick(event);
-    });
-
-    window.addEventListener('resize', () => {
-      this.updateMousePosition();
     });
   }
 
@@ -61,6 +59,8 @@ class CVInteractionManager {
     this.isAnimating = true;
     this.animationProgress = 0;
     this.cvPlane.setFocused(this.isFocused);
+    
+    console.log(`[INTERACTION] ${this.isFocused ? 'Focus ON' : 'Focus OFF'}`);
   }
 
   updateAnimation(deltaTime) {
@@ -79,30 +79,19 @@ class CVInteractionManager {
       ? 4 * t * t * t 
       : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
-    // Interpolar posición
-    const position = this.cvPlane.group.position;
-    const targetPos = this.isFocused ? this.focusedPosition : this.initialPosition;
-    const startPos = this.isFocused ? this.initialPosition : this.focusedPosition;
+    // Interpolar posición Z de la cámara
+    const targetCameraZ = this.isFocused ? this.focusedCameraZ : this.initialCameraZ;
+    const startCameraZ = this.isFocused ? this.initialCameraZ : this.focusedCameraZ;
     
-    position.x = startPos.x + (targetPos.x - startPos.x) * easeProgress;
-    position.y = startPos.y + (targetPos.y - startPos.y) * easeProgress;
-    position.z = startPos.z + (targetPos.z - startPos.z) * easeProgress;
+    this.camera.position.z = startCameraZ + (targetCameraZ - startCameraZ) * easeProgress;
 
-    // Interpolar escala
-    const targetScale = this.isFocused ? this.focusedScale : 1;
-    const startScale = this.isFocused ? 1 : this.focusedScale;
-    const currentScale = startScale + (targetScale - startScale) * easeProgress;
+    // Interpolar rotación del plano
+    const targetRot = this.isFocused ? this.focusedRotation : this.initialRotation;
+    const startRot = this.isFocused ? this.initialRotation : this.focusedRotation;
     
-    this.cvPlane.group.scale.set(currentScale, currentScale, currentScale);
-
-    // Cambiar opacidad de sombra
-    const shadowOpacity = this.isFocused ? 0.05 : 0.1;
-    const currentOpacity = (this.isFocused ? 0.1 : 0.05) + (shadowOpacity - (this.isFocused ? 0.1 : 0.05)) * easeProgress;
-    this.cvPlane.shadow.material.opacity = currentOpacity;
-  }
-
-  updateMousePosition() {
-    // Usar la última posición del mouse si es necesario
+    this.cvPlane.group.rotation.x = startRot.x + (targetRot.x - startRot.x) * easeProgress;
+    this.cvPlane.group.rotation.y = startRot.y + (targetRot.y - startRot.y) * easeProgress;
+    this.cvPlane.group.rotation.z = startRot.z + (targetRot.z - startRot.z) * easeProgress;
   }
 
   dispose() {
