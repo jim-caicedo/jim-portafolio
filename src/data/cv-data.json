@@ -1,0 +1,69 @@
+{
+  "personal": {
+    "name": "Jim Alejandro Caicedo Osorio",
+    "title": "Desarrollador Full Stack",
+    "email": "jimalejandro07@gmail.com",
+    "phone": "+573024736459",
+    "location": "Bogota, Colombia",
+    "summary": "Desarrollador apasionado por crear experiencias web innovadoras. Especializado en React y Three.js."
+  },
+  "experience": [
+    {
+      "company": "Globant",
+      "role": "Desarrollador",
+      "period": "abril 2025 - octubre 2025",
+      "description": "Desarrollo de aplicaciones web con React. Implementación de componentes 3D interactivos con Three.js.",
+      "highlights": [
+        "Arquitectura de componentes reutilizables",
+        "Integración de visualizaciones 3D",
+        "Optimización de rendimiento"
+      ]
+    },
+    {
+      "company": "Startup XYZ",
+      "role": "Junior Developer",
+      "period": "2020 - 2022",
+      "description": "Colaboración en proyectos web y mantenimiento de aplicaciones existentes.",
+      "highlights": [
+        "Desarrollo de features con React",
+        "Tests unitarios y de integración",
+        "Code reviews"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Universidad / Bootcamp",
+      "degree": "Ingeniería en Informática / Desarrollo Web",
+      "period": "2016 - 2020"
+    }
+  ],
+  "skills": {
+    "technical": [
+      "JavaScript / TypeScript",
+      "React",
+      "Node.js",
+      "Three.js",
+      "Git",
+      "HTML/CSS",
+      "swiftUI",
+      "swift",
+      "Java",
+      "Spring Boot",
+      "PHP"
+    ],
+    "soft": [
+      "Trabajo en equipo",
+      "Comunicación",
+      "Resolución de problemas"
+    ]
+  },
+  "projects": [
+    {
+      "name": "Proyecto Portfolio 3D",
+      "description": "Portafolio interactivo con casa 3D, cubo de Rubik y visualizador de CV.",
+      "tech": ["React", "Three.js", "CSS3D"],
+      "url": "https://tu-portfolio.com"
+    }
+  ]
+}

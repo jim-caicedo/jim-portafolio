@@ -18,7 +18,7 @@ class CVPlane {
     
     const geometry = new THREE.PlaneGeometry(width, height);
     const material = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
+      color: 0xf5f5f5,
       side: THREE.DoubleSide,
     });
     

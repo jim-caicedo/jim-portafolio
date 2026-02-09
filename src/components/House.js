@@ -121,13 +121,22 @@ const House = () => {
     navigate('/interior');
   }, [navigate]);
 
+  const handleCV = useCallback(() => {
+    navigate('/cv');
+  }, [navigate]);
+
   return (
     <div className="container3d">
       <div className="overlay">
         <h1 className="title">Jim's House</h1>
-        <button className="enter-button" onClick={handleEnter}>
-          Enter
-        </button>
+        <div className="overlay-buttons">
+          <button className="enter-button" onClick={handleEnter}>
+            Enter
+          </button>
+          <button className="cv-button" onClick={handleCV}>
+            Mi CV
+          </button>
+        </div>
       </div>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
     </div>

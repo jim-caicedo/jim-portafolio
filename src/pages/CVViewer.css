@@ -1,4 +1,5 @@
 .cv-viewer-container {
+  position: relative;
   width: 100%;
   height: 100vh;
   display: flex;
@@ -11,6 +12,22 @@
   width: 100%;
   height: 100%;
   flex: 1;
+  position: relative;
+}
+
+/* Wrapper para CVContent: A4 en resolución 2x (nitidez al zoom) */
+.cv-content-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1200px;
+  min-height: 1696px;
+  pointer-events: none;
+  /* Oculto hasta que CSS3D esté listo (evita el flash de la hoja grande) */
+  visibility: hidden;
+}
+.cv-content-wrapper.cv-ready {
+  visibility: visible;
 }
 
 .cv-info {

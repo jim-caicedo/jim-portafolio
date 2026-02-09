@@ -1,0 +1,206 @@
+/* CV Content - Resolución 2x para nitidez al hacer zoom (A4: 1200x1696) */
+
+.cv-content {
+  width: 1200px;
+  min-height: 1696px;
+  background: #ffffff;
+  color: #1a1a2e;
+  padding: 64px 80px;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 22px;
+  line-height: 1.5;
+  box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  /* Mejor renderizado de fuentes */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header */
+.cv-header {
+  border-bottom: 4px solid #1a1a2e;
+  padding-bottom: 32px;
+  margin-bottom: 40px;
+}
+
+.cv-name {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.cv-title {
+  margin: 8px 0 16px 0;
+  font-size: 28px;
+  color: #444;
+  font-weight: 600;
+}
+
+.cv-contact {
+  font-size: 20px;
+  color: #555;
+}
+
+.cv-contact span {
+  margin: 0 4px;
+}
+
+.cv-summary {
+  margin: 24px 0 0 0;
+  font-size: 22px;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Secciones */
+.cv-section {
+  margin-bottom: 40px;
+}
+
+.cv-section-title {
+  margin: 0 0 24px 0;
+  font-size: 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #1a1a2e;
+}
+
+/* Experiencia */
+.cv-experience-item {
+  margin-bottom: 32px;
+}
+
+.cv-experience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+}
+
+.cv-job-role {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.cv-job-period {
+  font-size: 20px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.cv-company {
+  margin: 4px 0 8px 0;
+  font-size: 22px;
+  font-style: italic;
+  color: #444;
+}
+
+.cv-job-description {
+  margin: 12px 0 16px 0;
+  font-size: 22px;
+  color: #333;
+}
+
+.cv-highlights {
+  margin: 8px 0 0 32px;
+  padding: 0;
+}
+
+.cv-highlights li {
+  margin-bottom: 2px;
+}
+
+/* Educación */
+.cv-education-item {
+  margin-bottom: 24px;
+}
+
+.cv-degree {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.cv-institution {
+  margin: 4px 0;
+  font-size: 22px;
+  color: #444;
+}
+
+.cv-edu-period {
+  font-size: 20px;
+  color: #666;
+}
+
+/* Skills */
+.cv-section-skills .cv-section-title {
+  margin-bottom: 16px;
+}
+
+.cv-skills-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cv-skill-group h4 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.cv-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cv-skill-tag {
+  display: inline-block;
+  padding: 6px 16px;
+  background: #1a1a2e;
+  color: #fff;
+  font-size: 20px;
+  border-radius: 6px;
+}
+
+.cv-skill-soft {
+  background: #555;
+}
+
+/* Proyectos */
+.cv-project-item {
+  margin-bottom: 24px;
+}
+
+.cv-project-name {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.cv-project-description {
+  margin: 8px 0 12px 0;
+  font-size: 22px;
+  color: #333;
+}
+
+.cv-project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cv-tech-tag {
+  font-size: 18px;
+  padding: 4px 12px;
+  background: #eee;
+  border-radius: 4px;
+  color: #444;
+}

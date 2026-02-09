@@ -20,6 +20,13 @@
     margin-bottom: 20px;
 }
 
+.overlay-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
 .enter-button {
     padding: 10px 20px;
     font-size: 1.2rem;
@@ -33,4 +40,19 @@
 
 .enter-button:hover {
     background-color: #45a049;
+}
+
+.cv-button {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cv-button:hover {
+    background-color: #1976D2;
 }
