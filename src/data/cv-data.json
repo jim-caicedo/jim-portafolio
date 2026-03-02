@@ -1,69 +1,93 @@
 {
   "personal": {
     "name": "Jim Alejandro Caicedo Osorio",
-    "title": "Desarrollador Full Stack",
+    "title": "iOS Developer",
     "email": "jimalejandro07@gmail.com",
     "phone": "+573024736459",
     "location": "Bogota, Colombia",
-    "summary": "Desarrollador apasionado por crear experiencias web innovadoras. Especializado en React y Three.js."
+    "summary": "iOS Developer specialized in Swift and SwiftUI with practical experience building end-to-end mobile applications. Strong foundation in MVVM architecture, RESTful API integration, and Clean Architecture principles. Passionate about mobile development and continuous technical growth."
   },
   "experience": [
     {
       "company": "Globant",
-      "role": "Desarrollador",
+      "role": "iOS Developer Trainee",
       "period": "abril 2025 - octubre 2025",
-      "description": "Desarrollo de aplicaciones web con React. Implementación de componentes 3D interactivos con Three.js.",
+      "description": "Participated in internal mobile development training program focused on iOS application architecture and best practices.",
       "highlights": [
-        "Arquitectura de componentes reutilizables",
-        "Integración de visualizaciones 3D",
-        "Optimización de rendimiento"
+        "Developed an iOS movie browsing application using Swift and SwiftUI",
+        "Implemented MVVM architecture for scalable and maintainable code structure",
+        "Integrated RESTful APIs using URLSession and handled JSON parsing with Codable",
+        "Applied Clean Architecture principles and version control with Git"
       ]
     },
     {
-      "company": "Startup XYZ",
-      "role": "Junior Developer",
-      "period": "2020 - 2022",
-      "description": "Colaboración en proyectos web y mantenimiento de aplicaciones existentes.",
+      "company": "Personal Project",
+      "role": "iOS Developer",
+      "period": "2025",
+      "description": "Development of CheckMovies, an iOS application built to practice real-world mobile architecture and API consumption.",
       "highlights": [
-        "Desarrollo de features con React",
-        "Tests unitarios y de integración",
-        "Code reviews"
+        "Structured application using MVVM pattern",
+        "Designed responsive UI with SwiftUI",
+        "Managed asynchronous data loading with async/await",
+        "Implemented error handling and state management"
+      ]
+    },
+    {
+      "company": "Personal Portfolio Project",
+      "role": "Full Stack Developer",
+      "period": "2024 - 2025",
+      "description": "Designed and developed an interactive 3D developer portfolio to showcase software projects.",
+      "highlights": [
+        "Built responsive UI using React",
+        "Integrated 3D components using Three.js",
+        "Optimized performance and structured reusable components",
+        "Deployed project using Vercel"
       ]
     }
   ],
   "education": [
     {
-      "institution": "Universidad / Bootcamp",
-      "degree": "Ingeniería en Informática / Desarrollo Web",
-      "period": "2016 - 2020"
+      "institution": "SENA ",
+      "degree": "Desarrollo de Software",
+      "period": "2023 - 2025"
     }
   ],
   "skills": {
     "technical": [
+      "Swift",
+      "SwiftUI",
+      "MVVM Architecture",
+      "Clean Architecture",
+      "RESTful APIs",
+      "URLSession",
+      "Codable",
+      "Async/Await",
+      "Git & GitHub",
       "JavaScript / TypeScript",
       "React",
       "Node.js",
-      "Three.js",
-      "Git",
-      "HTML/CSS",
-      "swiftUI",
-      "swift",
       "Java",
-      "Spring Boot",
-      "PHP"
+      "Spring Boot"
     ],
     "soft": [
-      "Trabajo en equipo",
-      "Comunicación",
-      "Resolución de problemas"
+      "Problem Solving",
+      "Adaptability",
+      "Team Collaboration",
+      "Communication"
     ]
   },
   "projects": [
     {
-      "name": "Proyecto Portfolio 3D",
-      "description": "Portafolio interactivo con casa 3D, cubo de Rubik y visualizador de CV.",
-      "tech": ["React", "Three.js", "CSS3D"],
-      "url": "https://tu-portfolio.com"
+      "name": "CheckMovies iOS App",
+      "description": "Movie browsing iOS application built with SwiftUI following MVVM architecture and API integration.",
+      "tech": ["Swift", "SwiftUI", "MVVM"],
+      "url": "https://github.com/jim-caicedo/CheckMovies"
+    },
+    {
+      "name": "Interactive 3D Developer Portfolio",
+      "description": "Personal interactive portfolio featuring 3D environment and CV visualizer.",
+      "tech": ["React", "Three.js", "Vercel"],
+      "url": "https://jimportafolio.vercel.app"
     }
   ]
 }

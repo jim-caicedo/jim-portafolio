@@ -9,7 +9,6 @@ import './CVViewer.css';
 
 // Resolución 2x para mantener nitidez al hacer zoom (1200px -> 6 unidades en 3D)
 const CV_WIDTH = 1200;
-
 const CV_SCALE = 6 / CV_WIDTH;
 
 function CVViewer() {
@@ -93,10 +92,6 @@ function CVViewer() {
         <div ref={cvContentWrapperRef} className="cv-content-wrapper" aria-hidden="true">
           <CVContent data={cvData} />
         </div>
-      </div>
-      <div className="cv-info">
-        <h2>Haz click para explorar</h2>
-        <p>Click en la hoja para acercarte | Click fuera para alejar</p>
       </div>
     </div>
   );
