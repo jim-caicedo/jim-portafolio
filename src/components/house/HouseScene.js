@@ -3,6 +3,14 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import HouseBuilder from './builders/HouseBuilder';
 import EnvironmentBuilder from './builders/EnvironmentBuilder';
 import LowPolyMaterials from './materials/LowPolyMaterials';
+import FloatingSign from './objects/FloatingSign';
+import BirdsSystem from './objects/Birds';
+import RabbitsSystem from './objects/RabbitsSystem';
+import {
+  transitionToDoor,
+  transitionToSideView,
+  shakeCamera,
+} from './animations/CameraTransition';
 
 class HouseScene {
   constructor(sceneManager) {
@@ -14,10 +22,22 @@ class HouseScene {
     // OrbitControls
     this.controls = null;
     
+    // Floating Signs
+    this.signs = [];
+    this.signMeshes = [];
+    
+    // Birds System
+    this.birdsSystem = null;
+    
+    // Rabbits System
+    this.rabbitsSystem = null;
+    
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
     this.doorMesh = null;
     this.onDoorClick = null;
+    this.onSignClick = null;
+    this.isTransitioning = false;
     
     this.setupEventListeners();
   }
@@ -35,10 +55,41 @@ class HouseScene {
     const environment = this.environmentBuilder.build();
     this.sceneManager.add(environment);
     
+    // Crear letreros flotantes
+    this.createFloatingSigns();
+    
+    // Crear sistema de pájaros
+    this.birdsSystem = new BirdsSystem(6);
+    this.sceneManager.add(this.birdsSystem.getGroup());
+    
+    // Crear sistema de conejos
+    this.rabbitsSystem = new RabbitsSystem(4);
+    this.sceneManager.add(this.rabbitsSystem.getGroup());
+    
     // Configurar OrbitControls
     this.setupOrbitControls();
 
     console.log('[HouseScene] Built successfully');
+  }
+
+  createFloatingSigns() {
+    // Letrero 1: PROYECTOS (color turquesa)
+    const signProyectos = new FloatingSign('PROYECTOS', new THREE.Vector3(-6, 4, 0), 0x4ecdc4, '#ffffff');
+    this.signs.push(signProyectos);
+    this.signMeshes.push(signProyectos.getMesh());
+    this.sceneManager.add(signProyectos.getGroup());
+
+    // Letrero 2: SOBRE MÍ (color amarillo)
+    const signAboutMe = new FloatingSign('SOBRE MÍ', new THREE.Vector3(6, 3.5, 2), 0xffe66d, '#333333');
+    this.signs.push(signAboutMe);
+    this.signMeshes.push(signAboutMe.getMesh());
+    this.sceneManager.add(signAboutMe.getGroup());
+
+    // Letrero 3: CONTACTO (color coral)
+    const signContact = new FloatingSign('CONTACTO', new THREE.Vector3(0, 5, -6), 0xff6b6b, '#ffffff');
+    this.signs.push(signContact);
+    this.signMeshes.push(signContact.getMesh());
+    this.sceneManager.add(signContact.getGroup());
   }
 
   setupLighting() {
@@ -107,6 +158,8 @@ class HouseScene {
   }
 
   handleClick(event) {
+    if (this.isTransitioning) return;
+
     // No clickear en la puerta si se está usando OrbitControls
     if (this.controls && this.controls.state !== THREE.TOUCH.ROTATE) {
       const canvas = this.sceneManager.renderer.domElement;
@@ -121,14 +174,68 @@ class HouseScene {
       const intersects = this.raycaster.intersectObject(this.sceneManager.scene, true);
 
       for (let intersection of intersects) {
+        // Detectar clicks en letreros
+        if (intersection.object.userData.type === 'sign') {
+          this.handleSignClick(intersection.object);
+          break;
+        }
+
+        // Detectar clicks en puerta
         if (intersection.object === this.doorMesh || intersection.object.userData.type === 'door') {
           console.log('[HouseScene] Door clicked!');
-          if (this.onDoorClick) {
-            this.onDoorClick();
-          }
+          this.handleDoorClick();
           break;
         }
       }
+    }
+  }
+
+  async handleDoorClick() {
+    if (this.isTransitioning) return;
+    this.isTransitioning = true;
+
+    try {
+      await transitionToDoor(this.sceneManager.camera, this.controls);
+      if (this.onDoorClick) {
+        this.onDoorClick();
+      }
+    } finally {
+      this.isTransitioning = false;
+    }
+  }
+
+  async handleSignClick(signMesh) {
+    if (this.isTransitioning) return;
+    this.isTransitioning = true;
+
+    try {
+      // Encontrar cuál letrero fue clickeado
+      const signIndex = this.signMeshes.indexOf(signMesh);
+
+      if (signIndex === 0) {
+        // PROYECTOS
+        console.log('[HouseScene] Proyectos sign clicked!');
+        await transitionToDoor(this.sceneManager.camera, this.controls);
+        if (this.onSignClick) {
+          this.onSignClick('proyectos');
+        }
+      } else if (signIndex === 1) {
+        // SOBRE MÍ
+        console.log('[HouseScene] Sobre mí sign clicked!');
+        await transitionToSideView(this.sceneManager.camera, this.controls);
+        if (this.onSignClick) {
+          this.onSignClick('cv');
+        }
+      } else if (signIndex === 2) {
+        // CONTACTO
+        console.log('[HouseScene] Contacto sign clicked!');
+        shakeCamera(this.sceneManager.camera, 0.3, 400);
+        if (this.onSignClick) {
+          this.onSignClick('contact');
+        }
+      }
+    } finally {
+      this.isTransitioning = false;
     }
   }
 
@@ -143,21 +250,35 @@ class HouseScene {
 
     const intersects = this.raycaster.intersectObject(this.sceneManager.scene, true);
 
-    // Reset todos los colores
+    let isHoveringInteractive = false;
+
+    // Reset hovers de letreros
+    this.signs.forEach((sign) => sign.setHovered(false));
+
+    // Reset hover de puerta
     this.doorMesh.material.emissive.setHex(0x000000);
     this.doorMesh.material.emissiveIntensity = 0;
 
-    // Hover en puerta
+    // Verificar intersecciones
     for (let intersection of intersects) {
+      // Hover en letreros
+      if (intersection.object.userData.type === 'sign') {
+        const signIndex = this.signMeshes.indexOf(intersection.object);
+        if (signIndex !== -1) {
+          this.signs[signIndex].setHovered(true);
+          isHoveringInteractive = true;
+        }
+      }
+
+      // Hover en puerta
       if (intersection.object === this.doorMesh || intersection.object.userData.type === 'door') {
-        this.doorMesh.material.emissive.setHex(0xa0522d); // Marrón más claro
+        this.doorMesh.material.emissive.setHex(0xa0522d);
         this.doorMesh.material.emissiveIntensity = 0.8;
-        canvas.style.cursor = 'pointer';
-        return;
+        isHoveringInteractive = true;
       }
     }
 
-    canvas.style.cursor = 'auto';
+    canvas.style.cursor = isHoveringInteractive ? 'pointer' : 'auto';
   }
 
   update(sceneManager) {
@@ -165,15 +286,45 @@ class HouseScene {
     if (this.controls) {
       this.controls.update();
     }
+
+    // Actualizar letreros flotantes
+    this.signs.forEach((sign) => sign.update());
+
+    // Actualizar pájaros
+    if (this.birdsSystem) {
+      this.birdsSystem.update();
+    }
+
+    // Actualizar conejos
+    if (this.rabbitsSystem) {
+      this.rabbitsSystem.update();
+    }
   }
 
   setDoorClickCallback(callback) {
     this.onDoorClick = callback;
   }
 
+  setSignClickCallback(callback) {
+    this.onSignClick = callback;
+  }
+
   dispose() {
     if (this.controls) {
       this.controls.dispose();
+    }
+    
+    // Dispose floating signs
+    this.signs.forEach((sign) => sign.dispose());
+    
+    // Dispose birds system
+    if (this.birdsSystem) {
+      this.birdsSystem.dispose();
+    }
+    
+    // Dispose rabbits system
+    if (this.rabbitsSystem) {
+      this.rabbitsSystem.dispose();
     }
     
     this.houseBuilder.dispose();

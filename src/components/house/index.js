@@ -15,13 +15,27 @@ export default function House() {
 
   useEffect(() => {
     if (isReady && sceneManager) {
-      // Instanciar HouseScene y configurar callback
+      // Instanciar HouseScene y configurar callbacks
       sceneRef.current = new HouseScene(sceneManager);
       sceneRef.current.build();
+      
+      // Callback para clicks en puerta
       sceneRef.current.setDoorClickCallback(() => {
         console.log('[House] Navegando a interior');
-        // Transición a interior
         navigate('/interior');
+      });
+
+      // Callback para clicks en letreros
+      sceneRef.current.setSignClickCallback((signType) => {
+        console.log('[House] Navegando desde letrero:', signType);
+        if (signType === 'proyectos') {
+          navigate('/interior');
+        } else if (signType === 'cv') {
+          navigate('/cv');
+        } else if (signType === 'contact') {
+          // Por ahora scroll hasta un modal o similar
+          console.log('[House] Contacto clicked');
+        }
       });
 
       console.log('[House] Component ready');
