@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import House from './components/House';
+import House from './components/house';
 import Interior from './pages/Interior';
 import CVViewer from './pages/CVViewer';
 
